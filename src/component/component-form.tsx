@@ -1,10 +1,10 @@
 import { Controller, FieldValues, UseFormReturn } from "react-hook-form";
 import { Checkbox, ComponentStatus, RadioButton, Rating, DateTimePicker, SelectMultiple, Switch, Text, TextArea, TextField, Winicon, CustomCkEditor5, ImportFile, Select1 } from 'wini-web-components';
-import { Ultis } from "../Utils";
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ckEditorUploadPlugin } from "../da/baseDA";
+import { ckEditorUploadPlugin } from "../controller/config";
+import { Util } from "../controller/utils";
 
 interface DateRangeProps {
     start?: Date,
@@ -67,7 +67,7 @@ export function TextFieldForm(params: TextFieldFormProps) {
                     let newPrice = ev.target.value.trim().replaceAll(',', '')
                     ev.target.type = "text"
                     if (!isNaN(parseFloat(newPrice))) {
-                        ev.target.value = Ultis.money(parseFloat(newPrice))
+                        ev.target.value = Util.money(parseFloat(newPrice))
                     } else {
                         ev.target.value = ''
                     }
@@ -271,7 +271,7 @@ export function Select1Form(params: Select1FormProps) {
                     value={field.value}
                     options={params.options}
                     disabled={params.disabled}
-                    onChange={(ev) => {
+                    onChange={(ev: any) => {
                         field.onChange(ev?.id);
                         if (params.onChange) params.onChange(ev as any);
                     }}
@@ -313,7 +313,7 @@ export function SelectMultipleForm(params: SelectMultipleFormProps) {
                     value={typeof field.value === "string" ? undefined : field.value}
                     options={params.options as any}
                     disabled={params.disabled}
-                    onChange={(listValue) => {
+                    onChange={(listValue: any) => {
                         field.onChange(listValue);
                         if (params.onChange) params.onChange(listValue);
                     }}
@@ -372,13 +372,13 @@ export function CheckboxForm(params: CheckboxFormProps) {
     return <Controller
         name={params.name}
         control={params.methods.control}
-        render={({ field }) => <div className="row" style={{ gap: '0.8rem', ...(params.style ?? {}) }}>
+        render={({ field }) => <label className="row" style={{ gap: '0.8rem', ...(params.style ?? {}) }}>
             <Checkbox value={field.value} disabled={params.disabled} size={params.size} onChange={(newValue) => {
                 field.onChange(newValue)
                 if (params.onChange) params.onChange(newValue)
             }} style={{ borderRadius: params.radius ?? '0.4rem' }} />
             {params.labelElement ?? <Text className={"label-4"} maxLine={1}>{params.label}</Text>}
-        </div>}
+        </label>}
     />
 }
 
@@ -456,7 +456,7 @@ export function ImportFileForm(params: ImportFileFormProps) {
                 </div> : null)}
                 <ImportFile maxSize={params.maxSize} multiple={params.multiple} label={params.title} subTitle={params.subTitle} allowType={params.allowType} status={params.status} value={field.value} disabled={params.disabled}
                     style={{ width: '100%', borderStyle: 'dashed', maxWidth: '100%', flex: params.className?.includes("row") ? 1 : undefined }} className={`${params.className ?? ''} ${params.direction ?? 'row'}`}
-                    onChange={(ev) => {
+                    onChange={(ev: any) => {
                         field.onChange(ev);
                         if (params.onChange) params.onChange(ev);
                     }}
@@ -496,7 +496,7 @@ export function RangeForm(params: RangeFormProps) {
                                 <Text className="button-text-3" style={{ color: 'var(--neutral-text-subtitle-color)' }}>VND</Text>
                             </div> : undefined}
                         onFocus={params.type === 'money' ? (ev) => {
-                            ev.target.value = ev.target.value.replace(/,/g, '')
+                            ev.target.value = ev.target.value.replaceAll(',', '')
                             ev.target.type = "number"
                         } : undefined}
                         register={params.methods.register(params.name, {
@@ -510,7 +510,7 @@ export function RangeForm(params: RangeFormProps) {
                                             params.methods.setError(params.name, { message: 'From value must be less than To value' })
                                         }
                                     }
-                                    if (params.type === 'money') ev.target.value = Ultis.money(newValue)
+                                    if (params.type === 'money') ev.target.value = Util.money(newValue)
                                 } else {
                                     ev.target.value = ""
                                 }
@@ -544,7 +544,7 @@ export function RangeForm(params: RangeFormProps) {
                                             params.methods.setError(params.name, { message: 'From value must be less than To value' })
                                         }
                                     }
-                                    if (params.type === 'money') ev.target.value = Ultis.money(newValue)
+                                    if (params.type === 'money') ev.target.value = Util.money(newValue)
                                 } else {
                                     ev.target.value = ""
                                 }
@@ -623,7 +623,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
         if (propsValue && colorPickerRef.current) {
             colorPickerRef.current.querySelector('input[type="color"]').value = propsValue.slice(0, 7)
             colorPickerRef.current.querySelector('input[type="text"]').value = propsValue.slice(0, 7)
-            colorPickerRef.current.querySelector('input[type="number"]').value = Ultis.hexToPercent(propsValue.slice(7))
+            colorPickerRef.current.querySelector('input[type="number"]').value = Util.hexToPercent(propsValue.slice(7))
         } else if (colorPickerRef.current) {
             colorPickerRef.current.querySelector('input[type="color"]').value = '#000000'
             colorPickerRef.current.querySelector('input[type="text"]').value = ''
@@ -648,9 +648,9 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                     onFocus={(ev) => ev.target.select()}
                     disabled={props.disabled}
                     onBlur={(ev) => {
-                        const newVl = ev.target.value.replace(/#/g, "").substring(0, 6);
+                        const newVl = ev.target.value.replaceAll("#", "").substring(0, 6);
                         const _opacityValue = colorPickerRef.current.querySelector('input[type="number"]');
-                        field.onChange(`#${newVl}${Ultis.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
+                        field.onChange(`#${newVl}${Util.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
                         if (props.onChange) props.onChange(field.value)
                     }}
                     style={{ flex: 1, width: "100%", ...(props.textFieldStyle ?? {}) }}
@@ -662,7 +662,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                             style={{ visibility: 'hidden' }}
                             onChange={(ev) => {
                                 const _opacityValue = colorPickerRef.current.querySelector('input[type="number"]');
-                                field.onChange(`${ev.target.value}${Ultis.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
+                                field.onChange(`${ev.target.value}${Util.percentToHex(parseInt(_opacityValue.value?.length ? _opacityValue.value : "100")).toLowerCase()}`);
                                 if (props.onChange) props.onChange(field.value)
                             }} />
                     </label>}
@@ -679,7 +679,7 @@ export const ColorPickerForm = (props: ColorPickerForm) => {
                                 if (isNaN(_vl) || _vl > 100) _vl = 100;
                                 else if (_vl < 0) _vl = 0;
                                 const _colorValue = colorPickerRef.current?.querySelector('input[type="color"]').value;
-                                field.onChange(`${_colorValue}${Ultis.percentToHex(_vl).toLowerCase()}`);
+                                field.onChange(`${_colorValue}${Util.percentToHex(_vl).toLowerCase()}`);
                                 if (props.onChange) props.onChange(field.value)
                             }} />
                         <Text className='regular1'>%</Text>
