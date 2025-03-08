@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
-import { i18n as i18component, Popup, Select1, Text } from 'wini-web-components'
+import { i18n as i18component, Select1, Text } from 'wini-web-components'
 import styles from './chart.module.css'
 import RenderChartByType from "./chartByType"
 
@@ -57,7 +57,6 @@ export const ChartById = ({ id, searchRaw = "", className, style = {}, chartStyl
     }, [chartItem?.Type])
     const [selectedTime, setSelectedTime] = useState<string | number>()
     const groupByRegex = /(GROUPBY\s+\d+\s+(?:@\w+\s*)+)/g;
-    const popupRef = useRef<any>(null)
 
     const getData = async () => {
         let querySearch = chartItem!.Query.trim() === "*" ? "" : chartItem!.Query
@@ -199,7 +198,6 @@ export const ChartById = ({ id, searchRaw = "", className, style = {}, chartStyl
     }, [id])
 
     return <div className={`col ${styles["chart-block"]} ${className ?? ""}`} style={style}>
-        <Popup ref={popupRef} />
         <div className='row' style={{ gap: "1.6rem" }}>
             <div className="col" style={{ flex: 1, gap: "0.4rem" }}>
                 <Text className='heading-7'>{chartItem?.Name}</Text>

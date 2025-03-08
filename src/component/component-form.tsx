@@ -429,7 +429,6 @@ export function GroupRadioButtonForm(params: GroupRadioButtonFormProps) {
 }
 
 interface ImportFileFormProps extends SimpleFormProps {
-    options: Array<{ id: string | number, name: string, [p: string]: any }>,
     multiple?: boolean,
     maxSize?: number,
     allowType?: Array<string>,
