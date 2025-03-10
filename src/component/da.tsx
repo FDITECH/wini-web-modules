@@ -66,3 +66,27 @@ export enum ValidateType {
     even = 19,
     async = 20
 }
+
+export enum TriggerType {
+    click = "click",
+    dbclick = "dbclick",
+    hover = "hover",
+    keydown = "keydown",
+    mouseenter = "mouseenter",
+    mouseleave = "mouseleave",
+    mousedown = "mousedown",
+    mouseup = "mouseup",
+}
+
+export enum ActionType {
+    navigate = "navigate",
+    reload = "reload",
+    back = "back",
+    scrollTo = "scrollTo",
+    showPopup = "showPopup",
+    toastMessage = "toastMessage",
+    closePopup = "closePopup",
+    mousedown = "mousedown",
+    mouseup = "mouseup",
+    submit = "submit",
+}
