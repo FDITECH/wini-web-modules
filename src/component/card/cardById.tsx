@@ -192,6 +192,8 @@ const RenderComponentByLayer = (props: { item: { [p: string]: any }, layers: Arr
         case ComponentType.text:
             if (dataValue && typeof dataValue !== "string" && dataValue?.["__html"]) return <Text {...customProps} html={dataValue["__html"]} />
             else return <Text {...customProps}>{dataValue ?? props.item.Setting?.value ?? ""}</Text>
+        case ComponentType.icon:
+            return <Winicon {...({ ...customProps, src: dataValue ?? customProps.src })} />
         case ComponentType.img:
             return (dataValue && Array.isArray(dataValue)) ?
                 dataValue.map((e: any) => <img key={e.Id} alt="" {...({ ...customProps, src: e.startsWith("http") ? e : (ConfigData.imgUrlId + e) })} />) :
