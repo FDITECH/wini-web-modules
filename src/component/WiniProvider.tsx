@@ -12,10 +12,16 @@ interface Props {
      * */
     url: string,
     imgUrlId: string,
-    onInvalidToken?: () => void
+    onInvalidToken?: () => void,
+    children?: React.ReactNode
 }
 
 export const WiniProvider = (props: Props) => {
+    ConfigData.pid = props.pid
+    ConfigData.url = props.url
+    ConfigData.imgUrlId = props.imgUrlId
+    if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
+    
     useEffect(() => {
         ConfigData.pid = props.pid
         const _desginTokenController = new TableController("designtoken")
@@ -49,5 +55,5 @@ export const WiniProvider = (props: Props) => {
         if (props.onInvalidToken) ConfigData.onInvalidToken = props.onInvalidToken
     }, [props.onInvalidToken])
 
-    return <></>
+    return <>{props.children}</>
 }

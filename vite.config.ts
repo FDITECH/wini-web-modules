@@ -3,13 +3,16 @@ import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 import path from "path";
 import { fileURLToPath } from "url";
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   plugins: [react(), dts(), cssInjectedByJsPlugin()],
+  optimizeDeps: {
+    exclude: ["wini-web-components"],
+  },
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.tsx"),
@@ -18,11 +21,12 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react", /^react\/.*/, "react-dom", /react-dom\/.*/],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          "react/jsx-runtime": "ReactJsxRuntime",
         },
       },
     },
@@ -31,9 +35,9 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      "@": path.resolve(__dirname, "src"),
     },
-    extensions: ['.tsx', '.ts', '.js', '.css'],
+    extensions: [".tsx", ".ts", ".js", ".css"],
   },
   css: {
     preprocessorOptions: {

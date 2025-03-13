@@ -6,6 +6,7 @@ export class ConfigData {
     static pid = ""
     static url = ""
     static imgUrlId = "";
+    static extraPlugins = undefined;
     static onInvalidToken = () => Util.clearCookie();
 }
 
@@ -250,9 +251,3 @@ export class CkEditorUploadAdapter {
         this.xhr?.send(data);
     }
 }
-
-export const ckEditorUploadPlugin = [function (editor: { plugins: { get: (arg0: string) => { (): any; new(): any; createUploadAdapter: (loader: any) => CkEditorUploadAdapter; }; }; }) {
-    editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
-        return new CkEditorUploadAdapter(loader);
-    };
-}]

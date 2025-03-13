@@ -3,8 +3,8 @@ import { Checkbox, ComponentStatus, RadioButton, Rating, DateTimePicker, SelectM
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ckEditorUploadPlugin } from "../controller/config";
 import { Util } from "../controller/utils";
+import { ConfigData } from "../controller/config";
 
 interface DateRangeProps {
     start?: Date,
@@ -211,7 +211,7 @@ export function DateTimePickerForm(params: DateTimePickerFormProps) {
 }
 
 interface CKEditorFormProps extends SimpleFormProps {
-
+    ckEditorUploadPlugin: Array<any>
 }
 
 export function CKEditorForm(params: CKEditorFormProps) {
@@ -231,7 +231,7 @@ export function CKEditorForm(params: CKEditorFormProps) {
                     style={params.className?.includes("row") ? { flex: 1, overflow: "hidden visible" } : undefined}
                     value={field.value}
                     disabled={params.disabled}
-                    extraPlugins={ckEditorUploadPlugin}
+                    extraPlugins={params.ckEditorUploadPlugin ?? ConfigData.extraPlugins}
                     onBlur={(_, editor) => { field.onChange(editor.getData()) }}
                     placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
                     helperText={_covertErrors && (_covertErrors?.message?.length ? _covertErrors?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)} />
