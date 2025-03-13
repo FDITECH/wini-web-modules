@@ -1,19 +1,18 @@
 {
   "name": "wini-web-modules",
+  "private": false,
+  "description": "render ui by wini data",
   "version": "0.0.1",
-  "description": "wini-web-modules",
-  "main": "dist/my-react-library.cjs.js",
-  "module": "dist/my-react-library.es.js",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "prepublishOnly": "npm run build"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "dependencies": {
     "axios": "^1.8.2",
@@ -32,12 +31,31 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.19.0",
+    "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.22.0",
-    "vite": "^6.1.0"
-  }
+    "typescript": "~5.8.2",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.2.0",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
+    "vite-plugin-dts": "^4.5.3"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WiniGit/wini-web-modules.git"
+  },
+  "keywords": [
+    "wini"
+  ],
+  "author": "thunt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WiniGit/wini-web-modules/issues"
+  },
+  "homepage": "https://github.com/WiniGit/wini-web-modules#readme"
 }
