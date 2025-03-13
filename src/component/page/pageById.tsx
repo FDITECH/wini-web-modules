@@ -7,14 +7,17 @@ import { CardById } from "../card/cardById"
 import { ChartById } from "../chart/chartById"
 
 interface Props {
-    layers: Array<{ [p: string]: any }>,
-    layout: Array<{ [p: string]: any }>,
     childrenData?: { [p: string]: ReactNode },
     styleData?: { [p: string]: CSSProperties },
     itemData?: { [p: string]: ReactNode }
 }
 
-export const RenderPageView = ({ childrenData, styleData, itemData, layers = [], layout = [] }: Props) => {
+interface RenderPageProps extends Props {
+    layers: Array<{ [p: string]: any }>,
+    layout: Array<{ [p: string]: any }>,
+}
+
+const RenderPageView = ({ childrenData, styleData, itemData, layers = [], layout = [] }: RenderPageProps) => {
     const navigate = useNavigate()
 
     const renderPageView = (item: { [p: string]: any }, list: Array<{ [p: string]: any }> = []) => {
@@ -128,3 +131,15 @@ const ActionPopup = ({ id, children, className = "" }: { id: string, children: R
         <button hidden type="button" className="close" onClick={() => { closePopup(ref) }} />
     </div>
 }
+
+interface PageByIdProps extends Props {
+    id: string
+}
+
+export const PageById = (props: PageByIdProps) => { }
+
+interface PageByUrlProps extends Props {
+    url: string
+}
+
+export const PageByUrl = (props: PageByUrlProps) => { }

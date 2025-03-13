@@ -1,6 +1,5 @@
-import { parse, format } from 'date-fns';
+import { parse } from 'date-fns';
 
-export const regexTimeDuration = /^\d*\s*(d|day|days|w|week|weeks|m|month|months|y|year|years|h|hour|hours|min|minute|minutes)$/i
 // Conversion factors to milliseconds
 const conversionFactors: { [p: string]: number } = {
     "d": 24 * 60 * 60 * 1000,
@@ -22,26 +21,6 @@ const conversionFactors: { [p: string]: number } = {
     "minute": 60 * 1000,
     "minutes": 60 * 1000,
 };
-// Function to convert time input to milliseconds
-export function timeToMilliseconds(input: string) {
-    // Validate the input using the regex
-    if (!regexTimeDuration.test(input)) {
-        throw new Error("Invalid time format");
-    }
-
-    // Extract the numeric value and unit
-    const match = input.match(/^(\d*)\s*(\w+)$/i);
-    const numericValue = match?.[1] ? parseInt(match[1], 10) : 1; // Default to 1 if no number
-    const unit = match?.[2]?.toLowerCase(); // Case-insensitive match
-
-    // Calculate milliseconds
-    const factor = unit && (conversionFactors[unit]);
-    if (!factor) {
-        throw new Error("Unsupported time unit");
-    }
-
-    return numericValue * factor;
-}
 
 export class Util {
     static dateTime_stringToDecimal(stringDate: string) {
