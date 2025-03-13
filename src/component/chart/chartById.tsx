@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from "react"
+import { CSSProperties, ReactNode, useEffect, useMemo, useState } from "react"
 import { DataController, SettingDataController } from "../../controller/data"
 import { i18n as i18component, Select1, Text } from 'wini-web-components'
 import styles from './chart.module.css'

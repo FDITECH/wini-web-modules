@@ -200,7 +200,7 @@ function FormByType(props: FormByTypeProps) {
         }
     }
 
-    const _onError = (ev: any) => { }
+    // const _onError = (ev: any) => { }
 
     useEffect(() => {
         if (props.formItem) {

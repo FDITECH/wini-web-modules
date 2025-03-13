@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom"
-import { CSSProperties, ReactNode, useEffect, useRef } from "react"
+import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react"
 import { ActionType, ComponentType, TriggerType } from "../da"
 import { closePopup, Popup, showPopup, Text, Winicon } from "wini-web-components"
 import { FormById } from "../form/formById"
 import { CardById } from "../card/cardById"
 import { ChartById } from "../chart/chartById"
+import { TableController } from "../../controller/setting"
 
 interface Props {
     childrenData?: { [p: string]: ReactNode },
@@ -136,10 +137,74 @@ interface PageByIdProps extends Props {
     id: string
 }
 
-export const PageById = (props: PageByIdProps) => { }
+export const PageById = (props: PageByIdProps) => {
+    const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
+    const [data, setData] = useState<{ layout: Array<{ [p: string]: any }>, layers: Array<{ [p: string]: any }> }>()
+
+    useEffect(() => {
+        const pageController = new TableController("page")
+        pageController.getByListId([props.id]).then(res => {
+            if (res.code === 200) setPageItem(res.data[0])
+            else setPageItem(undefined)
+        })
+    }, [props.id])
+
+    const getData = async () => {
+        const layoutId = pageItem!.LayoutId
+        const layerController = new TableController("layer")
+        const res = await Promise.all([
+            layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${layoutId}}) | (@LayoutId:{${layoutId}})` }),
+            layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${pageItem!.Id}}` })
+        ])
+        if (res[0].code === 200 && res[1].code === 200) setData({ layout: res[0].data, layers: res[1].data })
+    }
+
+    useEffect(() => {
+        if (pageItem) getData()
+        else if (data) setData(undefined)
+    }, [pageItem])
+
+    return pageItem && data ? <RenderPageView
+        layout={data.layout}
+        layers={data.layers}
+        {...props}
+    /> : null
+}
 
 interface PageByUrlProps extends Props {
     url: string
 }
 
-export const PageByUrl = (props: PageByUrlProps) => { }
+export const PageByUrl = (props: PageByUrlProps) => {
+    const [pageItem, setPageItem] = useState<{ [p: string]: any }>()
+    const [data, setData] = useState<{ layout: Array<{ [p: string]: any }>, layers: Array<{ [p: string]: any }> }>()
+
+    useEffect(() => {
+        const pageController = new TableController("page")
+        pageController.getListSimple({ page: 1, size: 1, query: `@Url:{${props.url.length ? props.url : "\\/"}}` }).then(res => {
+            if (res.code === 200) setPageItem(res.data[0])
+            else setPageItem(undefined)
+        })
+    }, [props.url])
+
+    const getData = async () => {
+        const layoutId = pageItem!.LayoutId
+        const layerController = new TableController("layer")
+        const res = await Promise.all([
+            layerController.getListSimple({ page: 1, size: 2000, query: `(@Id:{${layoutId}}) | (@LayoutId:{${layoutId}})` }),
+            layerController.getListSimple({ page: 1, size: 1000, query: `@PageId:{${pageItem!.Id}}` })
+        ])
+        if (res[0].code === 200 && res[1].code === 200) setData({ layout: res[0].data, layers: res[1].data })
+    }
+
+    useEffect(() => {
+        if (pageItem) getData()
+        else if (data) setData(undefined)
+    }, [pageItem])
+
+    return pageItem && data ? <RenderPageView
+        layout={data.layout}
+        layers={data.layers}
+        {...props}
+    /> : null
+}

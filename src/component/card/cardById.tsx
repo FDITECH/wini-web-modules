@@ -109,7 +109,7 @@ const RenderComponentByLayer = (props: { item: { [p: string]: any }, layers: Arr
                 switch (trigger) {
                     case TriggerType.click:
                         const _onClick = async (acts = []) => {
-                            for (const [i, act] of acts.entries()) {
+                            for (const [_, act] of acts.entries()) {
                                 const actItem = act as { [p: string]: any }
                                 switch (actItem.Action) {
                                     case ActionType.navigate:
