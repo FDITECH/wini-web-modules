@@ -316,7 +316,7 @@ export default function RenderChartByType(props: Props) {
                 // },
                 radar: {
                     // shape: 'circle',
-                    indicator: props.datasets.map((e) => {
+                    indicator: props.datasets.map(() => {
                         return {
                             // name: e[0],
                             // max: Math.max(...e.slice(1))
@@ -370,7 +370,7 @@ export default function RenderChartByType(props: Props) {
                     })}
                 </div>
                 <ReactEcharts
-                    onEvents={{ click: props.handleChartClick }}
+                    onEvents={{ click: props.handleChartClick as any }}
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
@@ -439,7 +439,7 @@ export default function RenderChartByType(props: Props) {
         default:
             return <div className="row" style={props.style}>
                 <ReactEcharts
-                    onEvents={{ click: props.handleChartClick }}
+                    onEvents={{ click: props.handleChartClick as any }}
                     notMerge={true}
                     lazyUpdate={true}
                     option={option}
