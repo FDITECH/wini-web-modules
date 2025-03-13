@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useMemo, useState } from "react"
-import { DataController } from "../../controller/data"
+import { DataController, SettingDataController } from "../../controller/data"
 import { useForm, UseFormReturn } from "react-hook-form"
 import { TableController } from "../../controller/setting"
 import { ActionType, ComponentType, FEDataType, TriggerType } from "../da"
@@ -203,6 +203,30 @@ const RenderComponentByLayer = (props: { item: { [p: string]: any }, layers: Arr
     }
 }
 
-export const CardById = () => {
-    return <div></div>
+interface CardProps extends Props {
+    id: string
+}
+
+export const CardById = (props: CardProps) => {
+    const [cardItem, setCardItem] = useState<{ [p: string]: any }>()
+
+    useEffect(() => {
+        if (props.id) {
+            const _settingDataController = new SettingDataController("card")
+            _settingDataController.getByIds([props.id]).then(async (res) => {
+                if (res.code === 200) {
+                    let _cardItem = res.data[0]
+                    if (_cardItem.Props && typeof _cardItem.Props === "string") _cardItem.Props = JSON.parse(_cardItem.Props)
+                    setCardItem(_cardItem)
+                }
+            })
+        } else if (cardItem) setCardItem(undefined)
+    }, [props.id])
+
+    return cardItem ? <RenderCard
+        key={cardItem.Id}
+        cardItem={cardItem}
+        layers={cardItem.Props}
+        {...props}
+    /> : null
 }
