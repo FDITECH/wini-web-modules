@@ -150,13 +150,13 @@ export function TextAreaForm(params: TextAreaFormProps) {
             register={params.methods.register(params.name, {
                 required: params.required,
                 onBlur: params.onBlur,
+                onChange: params.onChange
             }) as any}
             onFocus={params.onFocus}
             style={{ width: '100%', height: '100%', flex: 1, ...(params.textAreaStyle ?? {}) }}
             placeholder={params.placeholder ? params.placeholder : params.label ? `${t("input")} ${params.label.toLowerCase()}` : ''}
             disabled={params.disabled}
             readOnly={params.readOnly}
-            onChange={params.onChange}
             name={params.name}
             maxLength={params.maxLength}
             helperText={convertErrors(params.methods.formState.errors, params.name) && (convertErrors(params.methods.formState.errors, params.name)?.message?.length ? convertErrors(params.methods.formState.errors, params.name)?.message : `${t("input")} ${(params.placeholder ? params.placeholder : params.label ? `${params.label}` : t('value')).toLowerCase()}`)}

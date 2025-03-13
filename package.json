@@ -2,7 +2,7 @@
   "name": "wini-web-modules",
   "private": false,
   "description": "render ui by wini data",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -48,7 +48,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WiniGit/wini-web-modules.git"
+    "url": "git+https://github.com/FDITECH/wini-web-modules.git"
   },
   "keywords": [
     "wini"
@@ -56,7 +56,7 @@
   "author": "thunt",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/WiniGit/wini-web-modules/issues"
+    "url": "https://github.com/FDITECH/wini-web-modules/issues"
   },
-  "homepage": "https://github.com/WiniGit/wini-web-modules#readme"
+  "homepage": "https://github.com/FDITECH/wini-web-modules#readme"
 }
